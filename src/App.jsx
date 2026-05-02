@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 
+// Palette: Warm Fog #DDD3C9 · Berry Good #ECC4C3 · Usu Koubai #B97D7B · Meadow Mauve #928E5E · Soldier Green #575527
+
+const AUTHOR = "Mansha Mehra";
+const HANDLE = "@mansha.writes";
+const PROFILE_PIC = "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&auto=format&fit=crop&q=80";
+
 const INITIAL_POSTS = [
   {
     id: 1,
     title: "The Quiet Hours Before Dawn",
     excerpt: "There is a particular kind of silence that exists only between 3 and 5 in the morning — a silence that feels borrowed, provisional, almost sacred.",
     content: "There is a particular kind of silence that exists only between 3 and 5 in the morning — a silence that feels borrowed, provisional, almost sacred. Cities don't sleep so much as they pause, holding their breath between the last drunk's stumble home and the first baker's alarm.\n\nI've spent more of these hours awake than most people would consider wise. Not from insomnia exactly, but from a persistent feeling that something important happens in that dark window — some reshuffling of the world's priorities, some quiet negotiation between what the day demands and what the soul actually needs.\n\nThe best writing I've ever done happened in those hours. Not because I'm more disciplined then, but because I'm more honest. The performances we maintain for ourselves — the curated self-image, the optimistic narrator — go quiet when we're tired enough.",
-    author: "Meera Vashisht",
-    date: "Apr 28, 2026",
-    readTime: "4 min",
-    tag: "Reflections",
-    tagColor: "#7C5CBF",
-    tagBg: "#F0ECFA",
+    author: AUTHOR, date: "Apr 28, 2026", readTime: "4 min",
+    tag: "Reflections", tagColor: "#575527", tagBg: "#E4E2C8",
     cover: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&auto=format&fit=crop&q=60",
   },
   {
@@ -19,12 +21,8 @@ const INITIAL_POSTS = [
     title: "On Loving a City That Doesn't Know Your Name",
     excerpt: "Delhi loves you back in the most impersonal way — through its noise, its dust, its inexhaustible supply of samosa and chai at any hour.",
     content: "Delhi loves you back in the most impersonal way — through its noise, its dust, its inexhaustible supply of samosa and chai at any hour. There is no intimacy in how a city holds you. It holds everyone this way.\n\nAnd yet. And yet you find yourself walking the same lane in Lodi Garden three mornings in a row, watching the same woman feed the same crow, and something in you calls it home.\n\nHome might just be the places where your habits have found purchase. Where the chai-wallah knows your order. Where you've cried in public enough times that the park bench feels like a witness rather than furniture.",
-    author: "Meera Vashisht",
-    date: "Apr 19, 2026",
-    readTime: "6 min",
-    tag: "City Life",
-    tagColor: "#1D9E75",
-    tagBg: "#E1F5EE",
+    author: AUTHOR, date: "Apr 19, 2026", readTime: "6 min",
+    tag: "City Life", tagColor: "#7A5250", tagBg: "#F5E4E4",
     cover: "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800&auto=format&fit=crop&q=60",
   },
   {
@@ -32,401 +30,323 @@ const INITIAL_POSTS = [
     title: "Everything I Know About Grief I Learned from Monsoon",
     excerpt: "It comes without asking. It saturates everything. And then, without ceremony, it simply stops — leaving behind a smell that is almost unbearably clean.",
     content: "It comes without asking. It saturates everything. And then, without ceremony, it simply stops — leaving behind a smell that is almost unbearably clean.\n\nGrief is weather. That's the thing they don't put on the sympathy cards. They'd rather you think of it as a journey, a process, something with stages and completion. But grief doesn't have a destination. It has seasons.\n\nThe monsoon version of grief is the most honest: loud, total, and then quietly gone, until the same clouds return next year and you realize you've been waiting for them.",
-    author: "Meera Vashisht",
-    date: "Apr 7, 2026",
-    readTime: "5 min",
-    tag: "Personal",
-    tagColor: "#D85A30",
-    tagBg: "#FAECE7",
+    author: AUTHOR, date: "Apr 7, 2026", readTime: "5 min",
+    tag: "Personal", tagColor: "#6B6640", tagBg: "#EDEBDA",
     cover: "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=800&auto=format&fit=crop&q=60",
   },
 ];
 
 const TAGS = ["Reflections", "City Life", "Personal", "Literature", "Travel", "Philosophy", "Memory"];
 const TAG_COLORS = {
-  "Reflections": { color: "#7C5CBF", bg: "#F0ECFA" },
-  "City Life": { color: "#1D9E75", bg: "#E1F5EE" },
-  "Personal": { color: "#D85A30", bg: "#FAECE7" },
-  "Literature": { color: "#185FA5", bg: "#E6F1FB" },
-  "Travel": { color: "#BA7517", bg: "#FAEEDA" },
-  "Philosophy": { color: "#993556", bg: "#FBEAF0" },
-  "Memory": { color: "#3B6D11", bg: "#EAF3DE" },
+  "Reflections": { color: "#575527", bg: "#E4E2C8" },
+  "City Life":   { color: "#7A5250", bg: "#F5E4E4" },
+  "Personal":    { color: "#6B6640", bg: "#EDEBDA" },
+  "Literature":  { color: "#7A5250", bg: "#F9EDED" },
+  "Travel":      { color: "#575527", bg: "#E2E0C4" },
+  "Philosophy":  { color: "#6B5C5B", bg: "#EDD8D8" },
+  "Memory":      { color: "#6B6640", bg: "#F0EFE0" },
 };
 
-const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300;1,8..60,400&display=swap');
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body, #root {
-    font-family: 'Source Serif 4', Georgia, serif;
-    background: #FAFAF7;
-    color: #1a1a18;
-    min-height: 100vh;
-  }
-
-  .nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(250,250,247,0.92);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid #E8E8E0;
-    padding: 0 2rem;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 64px;
-  }
-
-  .nav-logo {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 22px; font-weight: 700;
-    color: #1a1a18; letter-spacing: -0.5px;
-    cursor: pointer;
-  }
-
-  .nav-logo span { color: #7C5CBF; font-style: italic; }
-
-  .nav-links { display: flex; gap: 4px; align-items: center; }
-
-  .nav-btn {
-    padding: 8px 16px; border-radius: 8px;
-    font-family: 'Source Serif 4', serif; font-size: 14px;
-    cursor: pointer; border: none; transition: all 0.2s;
-    background: transparent; color: #555550;
-  }
-
-  .nav-btn:hover { background: #F0ECFA; color: #7C5CBF; }
-  .nav-btn.active { background: #7C5CBF; color: white; }
-
-  .nav-btn.write {
-    background: #1a1a18; color: white;
-    border-radius: 20px; padding: 8px 20px;
-  }
-  .nav-btn.write:hover { background: #7C5CBF; color: white; }
-
-  /* FEED PAGE */
-  .feed-hero {
-    padding: 5rem 2rem 3rem;
-    max-width: 900px; margin: 0 auto;
-    border-bottom: 1px solid #E8E8E0;
-  }
-
-  .feed-eyebrow {
-    font-size: 11px; letter-spacing: 3px;
-    color: #7C5CBF; text-transform: uppercase;
-    font-family: 'Source Serif 4', serif;
-    margin-bottom: 1rem; font-weight: 600;
-  }
-
-  .feed-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2.2rem, 5vw, 3.8rem);
-    font-weight: 700; line-height: 1.15;
-    color: #1a1a18; letter-spacing: -1px;
-    margin-bottom: 1.5rem;
-  }
-
-  .feed-title em { color: #7C5CBF; }
-
-  .feed-subtitle {
-    font-size: 1.1rem; color: #666660;
-    line-height: 1.7; max-width: 550px;
-    font-style: italic;
-  }
-
-  .feed-main { max-width: 900px; margin: 0 auto; padding: 3rem 2rem; }
-
-  .featured-card {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 0; background: white;
-    border: 1px solid #E8E8E0; border-radius: 16px;
-    overflow: hidden; margin-bottom: 3rem;
-    cursor: pointer; transition: box-shadow 0.3s;
-  }
-
-  .featured-card:hover { box-shadow: 0 12px 48px rgba(0,0,0,0.08); }
-
-  .featured-img { height: 360px; overflow: hidden; }
-  .featured-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-  .featured-card:hover .featured-img img { transform: scale(1.03); }
-
-  .featured-body { padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
-
-  .post-tag {
-    display: inline-block; font-size: 11px;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    padding: 4px 10px; border-radius: 20px;
-    font-weight: 600; margin-bottom: 1rem;
-    font-family: 'Source Serif 4', serif;
-  }
-
-  .featured-body h2 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.7rem; font-weight: 700;
-    line-height: 1.25; color: #1a1a18;
-    margin-bottom: 1rem; letter-spacing: -0.5px;
-  }
-
-  .featured-body p {
-    font-size: 0.95rem; line-height: 1.75;
-    color: #666660; margin-bottom: 1.5rem;
-    font-style: italic;
-  }
-
-  .post-meta { font-size: 12px; color: #999990; display: flex; gap: 8px; align-items: center; }
-  .meta-dot { color: #ccc; }
-
-  .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
-
-  .post-card {
-    background: white; border: 1px solid #E8E8E0;
-    border-radius: 12px; overflow: hidden;
-    cursor: pointer; transition: all 0.25s;
-  }
-  .post-card:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.08); transform: translateY(-2px); }
-
-  .card-img { height: 180px; overflow: hidden; }
-  .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
-  .post-card:hover .card-img img { transform: scale(1.04); }
-
-  .card-body { padding: 1.25rem; }
-  .card-body h3 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.1rem; font-weight: 700;
-    color: #1a1a18; margin: 0.6rem 0 0.5rem;
-    line-height: 1.3;
-  }
-  .card-body p { font-size: 0.85rem; color: #888880; line-height: 1.65; font-style: italic; }
-
-  /* READ PAGE */
-  .read-page { max-width: 680px; margin: 0 auto; padding: 3rem 2rem 6rem; }
-
-  .read-back {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 13px; color: #888880; cursor: pointer;
-    border: none; background: none; padding: 0;
-    font-family: 'Source Serif 4', serif;
-    margin-bottom: 2rem; transition: color 0.2s;
-  }
-  .read-back:hover { color: #7C5CBF; }
-
-  .read-cover { width: 100%; height: 320px; object-fit: cover; border-radius: 12px; margin-bottom: 2.5rem; }
-
-  .read-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    font-weight: 700; line-height: 1.2;
-    color: #1a1a18; margin-bottom: 1.5rem;
-    letter-spacing: -0.5px;
-  }
-
-  .read-meta { display: flex; gap: 12px; align-items: center; padding-bottom: 1.5rem; border-bottom: 1px solid #E8E8E0; margin-bottom: 2rem; flex-wrap: wrap; }
-
-  .read-content { font-size: 1.05rem; line-height: 1.95; color: #333330; }
-  .read-content p { margin-bottom: 1.5rem; }
-
-  /* CREATE PAGE */
-  .create-page { max-width: 760px; margin: 0 auto; padding: 3rem 2rem 6rem; }
-
-  .create-header { margin-bottom: 2.5rem; }
-
-  .create-header h1 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 2rem; font-weight: 700;
-    color: #1a1a18; margin-bottom: 0.4rem;
-  }
-
-  .create-header p { font-size: 0.95rem; color: #888880; font-style: italic; }
-
-  .form-group { margin-bottom: 1.75rem; }
-
-  .form-label {
-    display: block; font-size: 11px; letter-spacing: 2px;
-    text-transform: uppercase; color: #888880;
-    font-weight: 600; margin-bottom: 0.5rem;
-    font-family: 'Source Serif 4', serif;
-  }
-
-  .form-input, .form-textarea, .form-select {
-    width: 100%; padding: 12px 16px;
-    border: 1px solid #E0E0D8; border-radius: 10px;
-    font-family: 'Source Serif 4', Georgia, serif;
-    font-size: 0.95rem; color: #1a1a18;
-    background: white; transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
-  }
-
-  .form-input:focus, .form-textarea:focus, .form-select:focus {
-    border-color: #7C5CBF;
-    box-shadow: 0 0 0 3px rgba(124, 92, 191, 0.1);
-  }
-
-  .form-input::placeholder, .form-textarea::placeholder { color: #bbb; font-style: italic; }
-
-  .form-textarea { min-height: 280px; resize: vertical; line-height: 1.8; }
-
-  .title-input {
-    font-family: 'Playfair Display', Georgia, serif !important;
-    font-size: 1.4rem !important; font-weight: 700;
-    border: none !important; border-bottom: 2px solid #E0E0D8 !important;
-    border-radius: 0 !important; padding: 12px 0 !important;
-    box-shadow: none !important;
-  }
-  .title-input:focus { border-bottom-color: #7C5CBF !important; }
-
-  .tags-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-  .tag-option {
-    padding: 6px 14px; border-radius: 20px;
-    border: 1px solid #E0E0D8; cursor: pointer;
-    font-size: 13px; font-family: 'Source Serif 4', serif;
-    transition: all 0.2s; background: white; color: #666660;
-  }
-  .tag-option:hover { border-color: #7C5CBF; color: #7C5CBF; }
-  .tag-option.selected { background: #7C5CBF; color: white; border-color: #7C5CBF; }
-
-  .char-count { font-size: 11px; color: #bbb; text-align: right; margin-top: 4px; }
-
-  .publish-btn {
-    width: 100%; padding: 16px;
-    background: #1a1a18; color: white;
-    border: none; border-radius: 12px;
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.1rem; font-weight: 500;
-    cursor: pointer; transition: all 0.3s;
-    letter-spacing: 0.3px;
-  }
-  .publish-btn:hover { background: #7C5CBF; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(124,92,191,0.3); }
-  .publish-btn:disabled { background: #ccc; transform: none; box-shadow: none; cursor: not-allowed; }
-
-  .divider { display: flex; align-items: center; gap: 16px; margin: 1.5rem 0; }
-  .divider-line { flex: 1; height: 1px; background: #E8E8E0; }
-  .divider-text { font-size: 11px; color: #bbb; text-transform: uppercase; letter-spacing: 1px; }
-
-  /* PROFILE PAGE */
-  .profile-page { max-width: 900px; margin: 0 auto; padding: 4rem 2rem 6rem; }
-
-  .profile-header {
-    display: flex; gap: 3rem; align-items: flex-start;
-    padding-bottom: 3rem; border-bottom: 1px solid #E8E8E0;
-    margin-bottom: 3rem;
-  }
-
-  .avatar-wrap { position: relative; flex-shrink: 0; }
-
-  .avatar {
-    width: 110px; height: 110px; border-radius: 50%;
-    object-fit: cover; border: 3px solid white;
-    box-shadow: 0 0 0 2px #E8E8E0;
-  }
-
-  .avatar-ring {
-    position: absolute; inset: -6px; border-radius: 50%;
-    border: 2px dashed #C4B5E8; animation: spin 20s linear infinite;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .profile-name {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 2rem; font-weight: 700;
-    color: #1a1a18; margin-bottom: 0.3rem;
-    letter-spacing: -0.5px;
-  }
-
-  .profile-handle { font-size: 14px; color: #7C5CBF; margin-bottom: 1rem; }
-
-  .profile-bio {
-    font-size: 0.95rem; line-height: 1.75; color: #555550;
-    max-width: 480px; font-style: italic; margin-bottom: 1.5rem;
-  }
-
-  .profile-stats { display: flex; gap: 2rem; }
-
-  .stat { text-align: center; }
-  .stat-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #1a1a18; }
-  .stat-label { font-size: 11px; color: #999990; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
-
-  .profile-tags-section { margin-bottom: 3rem; }
-  .section-title {
-    font-family: 'Playfair Display', serif; font-size: 1.2rem;
-    font-weight: 700; color: #1a1a18; margin-bottom: 1rem;
-  }
-
-  .profile-posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
-
-  .success-toast {
-    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
-    background: #1a1a18; color: white;
-    padding: 12px 24px; border-radius: 30px;
-    font-size: 14px; font-family: 'Source Serif 4', serif;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
-    animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.5s forwards;
-    z-index: 999;
-  }
-
-  @keyframes slideUp { from { transform: translate(-50%, 20px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
-  @keyframes fadeOut { to { opacity: 0; } }
-
-  @media (max-width: 640px) {
-    .featured-card { grid-template-columns: 1fr; }
-    .featured-img { height: 220px; }
-    .profile-header { flex-direction: column; gap: 1.5rem; align-items: center; text-align: center; }
-    .profile-bio { max-width: 100%; }
-  }
+const KITTY_LEVELS = [
+  {
+    level: 1, name: "Newborn Kitten", minPosts: 0,
+    art: `<ellipse cx="50" cy="63" rx="20" ry="15" fill="#ECC4C3"/>
+<ellipse cx="50" cy="48" rx="15" ry="14" fill="#ECC4C3"/>
+<polygon points="38,38 34,26 43,35" fill="#ECC4C3"/>
+<polygon points="62,38 66,26 57,35" fill="#ECC4C3"/>
+<polygon points="39,37 35,27 43,34" fill="#F9DEDD"/>
+<polygon points="61,37 65,27 57,34" fill="#F9DEDD"/>
+<ellipse cx="44" cy="49" rx="3" ry="3.5" fill="#575527"/>
+<ellipse cx="56" cy="49" rx="3" ry="3.5" fill="#575527"/>
+<ellipse cx="44" cy="48.5" rx="1.2" ry="1.5" fill="#2a2a2a"/>
+<ellipse cx="56" cy="48.5" rx="1.2" ry="1.5" fill="#2a2a2a"/>
+<path d="M46,55 Q50,58 54,55" stroke="#B97D7B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<ellipse cx="50" cy="54.5" rx="2" ry="1.3" fill="#ECC4C3"/>
+<line x1="36" y1="51" x2="27" y2="49" stroke="#928E5E" stroke-width="1"/>
+<line x1="36" y1="53" x2="27" y2="53" stroke="#928E5E" stroke-width="1"/>
+<line x1="64" y1="51" x2="73" y2="49" stroke="#928E5E" stroke-width="1"/>
+<line x1="64" y1="53" x2="73" y2="53" stroke="#928E5E" stroke-width="1"/>
+<path d="M50,78 Q44,83 42,90" stroke="#ECC4C3" stroke-width="3" fill="none" stroke-linecap="round"/>`,
+  },
+  {
+    level: 2, name: "Curious Kitten", minPosts: 3,
+    art: `<ellipse cx="50" cy="65" rx="23" ry="18" fill="#ECC4C3"/>
+<ellipse cx="50" cy="47" rx="18" ry="16" fill="#ECC4C3"/>
+<polygon points="36,35 31,21 42,33" fill="#ECC4C3"/>
+<polygon points="64,35 69,21 58,33" fill="#ECC4C3"/>
+<polygon points="37,34 33,23 42,32" fill="#F9DEDD"/>
+<polygon points="63,34 67,23 58,32" fill="#F9DEDD"/>
+<ellipse cx="43" cy="48" rx="3.5" ry="4" fill="#575527"/>
+<ellipse cx="57" cy="48" rx="3.5" ry="4" fill="#575527"/>
+<ellipse cx="43" cy="47.5" rx="1.5" ry="2" fill="#2a2a2a"/>
+<ellipse cx="57" cy="47.5" rx="1.5" ry="2" fill="#2a2a2a"/>
+<ellipse cx="44" cy="47" rx="0.6" ry="0.8" fill="white"/>
+<ellipse cx="58" cy="47" rx="0.6" ry="0.8" fill="white"/>
+<path d="M45,55 Q50,59 55,55" stroke="#B97D7B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<ellipse cx="50" cy="54.5" rx="2.5" ry="1.5" fill="#ECC4C3"/>
+<line x1="34" y1="50" x2="23" y2="47" stroke="#928E5E" stroke-width="1.2"/>
+<line x1="34" y1="53" x2="23" y2="53" stroke="#928E5E" stroke-width="1.2"/>
+<line x1="34" y1="56" x2="23" y2="59" stroke="#928E5E" stroke-width="1.2"/>
+<line x1="66" y1="50" x2="77" y2="47" stroke="#928E5E" stroke-width="1.2"/>
+<line x1="66" y1="53" x2="77" y2="53" stroke="#928E5E" stroke-width="1.2"/>
+<line x1="66" y1="56" x2="77" y2="59" stroke="#928E5E" stroke-width="1.2"/>
+<path d="M50,83 Q58,89 62,84 Q66,79 60,75" stroke="#ECC4C3" stroke-width="3.5" fill="none" stroke-linecap="round"/>`,
+  },
+  {
+    level: 3, name: "Playful Cat", minPosts: 7,
+    art: `<ellipse cx="50" cy="67" rx="26" ry="20" fill="#ECC4C3"/>
+<ellipse cx="50" cy="46" rx="20" ry="18" fill="#ECC4C3"/>
+<polygon points="34,32 28,16 41,31" fill="#ECC4C3"/>
+<polygon points="66,32 72,16 59,31" fill="#ECC4C3"/>
+<polygon points="35,31 30,18 41,30" fill="#F9DEDD"/>
+<polygon points="65,31 70,18 59,30" fill="#F9DEDD"/>
+<ellipse cx="42" cy="46" rx="4" ry="4.5" fill="#575527"/>
+<ellipse cx="58" cy="46" rx="4" ry="4.5" fill="#575527"/>
+<ellipse cx="42" cy="45.5" rx="1.8" ry="2.2" fill="#2a2a2a"/>
+<ellipse cx="58" cy="45.5" rx="1.8" ry="2.2" fill="#2a2a2a"/>
+<ellipse cx="43" cy="45" rx="0.7" ry="0.9" fill="white"/>
+<ellipse cx="59" cy="45" rx="0.7" ry="0.9" fill="white"/>
+<path d="M44,54 Q50,59 56,54" stroke="#B97D7B" stroke-width="2" fill="none" stroke-linecap="round"/>
+<ellipse cx="50" cy="54" rx="3" ry="2" fill="#ECC4C3"/>
+<line x1="32" y1="47" x2="19" y2="43" stroke="#928E5E" stroke-width="1.3"/>
+<line x1="32" y1="51" x2="19" y2="51" stroke="#928E5E" stroke-width="1.3"/>
+<line x1="32" y1="55" x2="19" y2="59" stroke="#928E5E" stroke-width="1.3"/>
+<line x1="68" y1="47" x2="81" y2="43" stroke="#928E5E" stroke-width="1.3"/>
+<line x1="68" y1="51" x2="81" y2="51" stroke="#928E5E" stroke-width="1.3"/>
+<line x1="68" y1="55" x2="81" y2="59" stroke="#928E5E" stroke-width="1.3"/>
+<path d="M50,87 Q62,94 68,86 Q74,78 64,72" stroke="#B97D7B" stroke-width="4" fill="none" stroke-linecap="round"/>`,
+  },
+  {
+    level: 4, name: "Wise Cat", minPosts: 12,
+    art: `<ellipse cx="50" cy="68" rx="28" ry="22" fill="#ECC4C3"/>
+<ellipse cx="50" cy="45" rx="22" ry="20" fill="#ECC4C3"/>
+<polygon points="32,29 25,12 40,28" fill="#ECC4C3"/>
+<polygon points="68,29 75,12 60,28" fill="#ECC4C3"/>
+<polygon points="33,28 27,14 40,27" fill="#F9DEDD"/>
+<polygon points="67,28 73,14 60,27" fill="#F9DEDD"/>
+<ellipse cx="41" cy="45" rx="4.5" ry="5" fill="#575527"/>
+<ellipse cx="59" cy="45" rx="4.5" ry="5" fill="#575527"/>
+<ellipse cx="41" cy="44" rx="2" ry="2.5" fill="#2a2a2a"/>
+<ellipse cx="59" cy="44" rx="2" ry="2.5" fill="#2a2a2a"/>
+<ellipse cx="42" cy="43" rx="0.8" ry="1" fill="white"/>
+<ellipse cx="60" cy="43" rx="0.8" ry="1" fill="white"/>
+<path d="M43,54 Q50,60 57,54" stroke="#B97D7B" stroke-width="2" fill="none" stroke-linecap="round"/>
+<ellipse cx="50" cy="54" rx="3.5" ry="2.2" fill="#ECC4C3"/>
+<line x1="30" y1="46" x2="15" y2="41" stroke="#928E5E" stroke-width="1.4"/>
+<line x1="30" y1="50" x2="15" y2="50" stroke="#928E5E" stroke-width="1.4"/>
+<line x1="30" y1="54" x2="15" y2="59" stroke="#928E5E" stroke-width="1.4"/>
+<line x1="70" y1="46" x2="85" y2="41" stroke="#928E5E" stroke-width="1.4"/>
+<line x1="70" y1="50" x2="85" y2="50" stroke="#928E5E" stroke-width="1.4"/>
+<line x1="70" y1="54" x2="85" y2="59" stroke="#928E5E" stroke-width="1.4"/>
+<path d="M50,90 Q64,98 72,88 Q80,78 68,70" stroke="#B97D7B" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+<path d="M36,36 Q50,31 64,36" stroke="#928E5E" stroke-width="1" fill="none" opacity="0.6"/>`,
+  },
+  {
+    level: 5, name: "Ancient Elder Cat", minPosts: 20,
+    art: `<ellipse cx="50" cy="69" rx="30" ry="23" fill="#ECC4C3"/>
+<ellipse cx="50" cy="44" rx="23" ry="21" fill="#ECC4C3"/>
+<polygon points="30,27 22,8 39,26" fill="#ECC4C3"/>
+<polygon points="70,27 78,8 61,26" fill="#ECC4C3"/>
+<polygon points="31,26 24,10 39,25" fill="#F9DEDD"/>
+<polygon points="69,26 76,10 61,25" fill="#F9DEDD"/>
+<ellipse cx="40" cy="44" rx="5" ry="5.5" fill="#575527"/>
+<ellipse cx="60" cy="44" rx="5" ry="5.5" fill="#575527"/>
+<ellipse cx="40" cy="43" rx="2.3" ry="2.8" fill="#2a2a2a"/>
+<ellipse cx="60" cy="43" rx="2.3" ry="2.8" fill="#2a2a2a"/>
+<ellipse cx="41" cy="42" rx="1" ry="1.2" fill="white"/>
+<ellipse cx="61" cy="42" rx="1" ry="1.2" fill="white"/>
+<path d="M42,53 Q50,60 58,53" stroke="#B97D7B" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<ellipse cx="50" cy="53" rx="4" ry="2.5" fill="#ECC4C3"/>
+<line x1="28" y1="43" x2="11" y2="37" stroke="#928E5E" stroke-width="1.5"/>
+<line x1="28" y1="47" x2="11" y2="47" stroke="#928E5E" stroke-width="1.5"/>
+<line x1="28" y1="51" x2="11" y2="57" stroke="#928E5E" stroke-width="1.5"/>
+<line x1="72" y1="43" x2="89" y2="37" stroke="#928E5E" stroke-width="1.5"/>
+<line x1="72" y1="47" x2="89" y2="47" stroke="#928E5E" stroke-width="1.5"/>
+<line x1="72" y1="51" x2="89" y2="57" stroke="#928E5E" stroke-width="1.5"/>
+<path d="M50,92 Q66,101 75,89 Q84,77 70,68" stroke="#B97D7B" stroke-width="5" fill="none" stroke-linecap="round"/>
+<path d="M33,34 Q50,29 67,34" stroke="#DDD3C9" stroke-width="1.5" fill="none"/>
+<circle cx="50" cy="21" r="7" fill="#ECC4C3" opacity="0.35"/>
+<text x="50" y="25" text-anchor="middle" font-size="9" fill="#928E5E">✦</text>`,
+  },
+];
+
+function getKittyLevel(count) {
+  let cur = KITTY_LEVELS[0];
+  for (const l of KITTY_LEVELS) { if (count >= l.minPosts) cur = l; }
+  const idx = KITTY_LEVELS.indexOf(cur);
+  const next = KITTY_LEVELS[idx + 1];
+  const progress = next ? Math.round(((count - cur.minPosts) / (next.minPosts - cur.minPosts)) * 100) : 100;
+  return { ...cur, progress, next };
+}
+
+const css = `
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --fog: #DDD3C9; --berry: #ECC4C3; --koubai: #B97D7B;
+  --mauve: #928E5E; --green: #575527; --parchment: #F7F3EF; --ink: #2E2A20;
+}
+body, #root { font-family: 'Lora', Georgia, serif; background: var(--parchment); color: var(--ink); min-height: 100vh; }
+
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(247,243,239,0.93); backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--fog); height: 62px; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--green); cursor: pointer; }
+.nav-logo span { color: var(--koubai); font-style: italic; }
+.nav-links { display: flex; gap: 4px; align-items: center; }
+.nav-btn { padding: 7px 15px; border-radius: 20px; font-family: 'Lora', serif; font-size: 14px; cursor: pointer; border: none; background: transparent; color: var(--mauve); transition: all 0.2s; }
+.nav-btn:hover { background: var(--berry); color: var(--koubai); }
+.nav-btn.active { background: var(--green); color: var(--fog); }
+.nav-btn.write { background: var(--koubai); color: white; font-size: 13px; padding: 7px 18px; }
+.nav-btn.write:hover { background: var(--green); }
+
+.feed-hero { padding: 5rem 2rem 3rem; max-width: 880px; margin: 0 auto; border-bottom: 1px solid var(--fog); }
+.feed-eyebrow { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--koubai); margin-bottom: 1rem; font-weight: 500; }
+.feed-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 700; line-height: 1.15; color: var(--green); letter-spacing: -1px; margin-bottom: 1.2rem; }
+.feed-title em { color: var(--koubai); font-style: italic; }
+.feed-sub { font-size: 1rem; color: var(--mauve); line-height: 1.7; font-style: italic; max-width: 500px; }
+.feed-main { max-width: 880px; margin: 0 auto; padding: 3rem 2rem; }
+
+.featured-card { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--fog); border-radius: 16px; overflow: hidden; margin-bottom: 3rem; cursor: pointer; background: white; transition: box-shadow 0.3s; }
+.featured-card:hover { box-shadow: 0 10px 40px rgba(87,85,39,0.1); }
+.featured-img { height: 340px; overflow: hidden; }
+.featured-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.featured-card:hover .featured-img img { transform: scale(1.04); }
+.featured-body { padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
+.featured-body h2 { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 700; line-height: 1.25; color: var(--ink); margin: 0.8rem 0 1rem; letter-spacing: -0.3px; }
+.featured-body p { font-size: 0.92rem; line-height: 1.8; color: var(--mauve); margin-bottom: 1.5rem; font-style: italic; }
+
+.post-tag { display: inline-block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; font-weight: 600; font-family: 'Lora', serif; }
+.post-meta { font-size: 12px; color: #A89A8A; display: flex; gap: 6px; align-items: center; }
+.meta-dot { color: var(--berry); }
+
+.posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 22px; }
+.post-card { background: white; border: 1px solid var(--fog); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all 0.25s; }
+.post-card:hover { box-shadow: 0 8px 30px rgba(87,85,39,0.1); transform: translateY(-2px); }
+.card-img { height: 175px; overflow: hidden; }
+.card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
+.post-card:hover .card-img img { transform: scale(1.05); }
+.card-body { padding: 1.2rem; }
+.card-body h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin: 0.5rem 0 0.4rem; line-height: 1.3; }
+.card-body p { font-size: 0.83rem; color: var(--mauve); line-height: 1.65; font-style: italic; }
+
+.read-page { max-width: 660px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+.read-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--mauve); cursor: pointer; border: none; background: none; font-family: 'Lora', serif; margin-bottom: 2rem; transition: color 0.2s; }
+.read-back:hover { color: var(--koubai); }
+.read-cover { width: 100%; height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 2rem; }
+.read-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.2; color: var(--green); margin-bottom: 1.2rem; letter-spacing: -0.5px; }
+.read-meta { display: flex; gap: 10px; align-items: center; padding-bottom: 1.5rem; border-bottom: 1px solid var(--fog); margin-bottom: 2rem; flex-wrap: wrap; }
+.read-content { font-size: 1.05rem; line-height: 2; color: #3D3726; }
+.read-content p { margin-bottom: 1.5rem; }
+
+.create-page { max-width: 740px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+.create-header { margin-bottom: 2.5rem; }
+.create-header h1 { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; color: var(--green); margin-bottom: 0.3rem; }
+.create-header p { font-size: 0.9rem; color: var(--mauve); font-style: italic; }
+.form-group { margin-bottom: 1.75rem; }
+.form-label { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--mauve); font-weight: 600; margin-bottom: 0.5rem; }
+.form-input, .form-textarea { width: 100%; padding: 11px 14px; border: 1px solid var(--fog); border-radius: 10px; font-family: 'Lora', serif; font-size: 0.93rem; color: var(--ink); background: white; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
+.form-input:focus, .form-textarea:focus { border-color: var(--koubai); box-shadow: 0 0 0 3px rgba(185,125,123,0.12); }
+.form-input::placeholder, .form-textarea::placeholder { color: #C4B8AE; font-style: italic; }
+.form-textarea { min-height: 270px; resize: vertical; line-height: 1.85; }
+.title-input { font-family: 'Playfair Display', serif !important; font-size: 1.35rem !important; font-weight: 700; border: none !important; border-bottom: 2px solid var(--fog) !important; border-radius: 0 !important; padding: 10px 0 !important; box-shadow: none !important; background: transparent !important; }
+.title-input:focus { border-bottom-color: var(--koubai) !important; }
+.tags-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag-option { padding: 5px 13px; border-radius: 20px; border: 1px solid var(--fog); cursor: pointer; font-size: 12px; font-family: 'Lora', serif; transition: all 0.2s; background: white; color: var(--mauve); }
+.tag-option:hover { border-color: var(--koubai); color: var(--koubai); }
+.tag-option.selected { background: var(--koubai); color: white; border-color: var(--koubai); }
+.char-count { font-size: 11px; color: #C4B8AE; text-align: right; margin-top: 4px; }
+.publish-btn { width: 100%; padding: 15px; background: var(--green); color: var(--fog); border: none; border-radius: 12px; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+.publish-btn:hover { background: var(--koubai); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(185,125,123,0.3); }
+.publish-btn:disabled { background: var(--fog); color: #A89A8A; transform: none; box-shadow: none; cursor: not-allowed; }
+
+.profile-page { max-width: 880px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+.profile-header { display: flex; gap: 3rem; align-items: flex-start; padding-bottom: 3rem; border-bottom: 1px solid var(--fog); margin-bottom: 3rem; }
+.avatar-wrap { position: relative; flex-shrink: 0; }
+.avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 0 0 2px var(--berry); }
+.avatar-ring { position: absolute; inset: -7px; border-radius: 50%; border: 2px dashed var(--koubai); animation: spin 22s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.profile-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--green); margin-bottom: 0.2rem; letter-spacing: -0.5px; }
+.profile-handle { font-size: 14px; color: var(--koubai); margin-bottom: 1rem; }
+.profile-bio { font-size: 0.93rem; line-height: 1.8; color: var(--mauve); max-width: 440px; font-style: italic; margin-bottom: 1.5rem; }
+.profile-stats { display: flex; gap: 2rem; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--green); }
+.stat-label { font-size: 10px; color: #A89A8A; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+.kitty-card { background: white; border: 1px solid var(--berry); border-radius: 16px; padding: 1.5rem 2rem; display: flex; gap: 2rem; align-items: center; margin-bottom: 3rem; transition: transform 0.4s ease; }
+.kitty-level-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--koubai); font-weight: 600; margin-bottom: 4px; }
+.kitty-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--green); margin-bottom: 0.8rem; }
+.kitty-bar-track { height: 8px; background: var(--fog); border-radius: 10px; overflow: hidden; margin-bottom: 6px; }
+.kitty-bar { height: 100%; background: linear-gradient(90deg, var(--berry), var(--koubai)); border-radius: 10px; transition: width 0.8s ease; }
+.kitty-bar-label { font-size: 11px; color: var(--mauve); font-style: italic; }
+
+.section-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--green); margin-bottom: 1rem; }
+.profile-posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 18px; }
+
+.success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--green); color: var(--fog); padding: 11px 24px; border-radius: 30px; font-size: 13px; font-family: 'Lora', serif; box-shadow: 0 6px 24px rgba(87,85,39,0.2); animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.5s forwards; z-index: 999; }
+@keyframes slideUp { from { transform: translate(-50%, 16px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+@keyframes fadeOut { to { opacity: 0; } }
+
+@media (max-width: 620px) {
+  .featured-card { grid-template-columns: 1fr; } .featured-img { height: 210px; }
+  .profile-header { flex-direction: column; align-items: center; text-align: center; }
+  .profile-bio { max-width: 100%; } .kitty-card { flex-direction: column; align-items: center; text-align: center; }
+}
 `;
 
-export default function BlogApp() {
+export default function App() {
   const [page, setPage] = useState("feed");
   const [posts, setPosts] = useState(() => {
-    try {
-      const saved = localStorage.getItem("blog_posts");
-      return saved ? JSON.parse(saved) : INITIAL_POSTS;
-    } catch { return INITIAL_POSTS; }
+    try { const s = localStorage.getItem("mansha_posts"); return s ? JSON.parse(s) : INITIAL_POSTS; } catch { return INITIAL_POSTS; }
   });
   const [readPost, setReadPost] = useState(null);
   const [toast, setToast] = useState(null);
+  const [kittyAnim, setKittyAnim] = useState(false);
   const [form, setForm] = useState({ title: "", excerpt: "", content: "", tag: "", cover: "" });
 
   useEffect(() => {
-    try { localStorage.setItem("blog_posts", JSON.stringify(posts)); } catch {}
+    try { localStorage.setItem("mansha_posts", JSON.stringify(posts)); } catch {}
   }, [posts]);
 
-  const showToast = (msg) => {
-    setToast(msg);
-    setTimeout(() => setToast(null), 3000);
-  };
+  const kitty = getKittyLevel(posts.length);
 
-  const openPost = (post) => { setReadPost(post); setPage("read"); window.scrollTo(0, 0); };
+  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 3000); };
+  const openPost = (p) => { setReadPost(p); setPage("read"); window.scrollTo(0, 0); };
 
   const handlePublish = () => {
     if (!form.title.trim() || !form.content.trim()) return;
-    const tagInfo = TAG_COLORS[form.tag] || TAG_COLORS["Reflections"];
-    const newPost = {
-      id: Date.now(),
-      title: form.title,
+    const tc = TAG_COLORS[form.tag] || TAG_COLORS["Reflections"];
+    const p = {
+      id: Date.now(), title: form.title,
       excerpt: form.excerpt || form.content.slice(0, 140) + "…",
-      content: form.content,
-      author: "Meera Vashisht",
+      content: form.content, author: AUTHOR,
       date: new Date().toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }),
-      readTime: `${Math.max(1, Math.ceil(form.content.split(" ").length / 200))} min`,
-      tag: form.tag || "Reflections",
-      tagColor: tagInfo.color,
-      tagBg: tagInfo.bg,
+      readTime: `${Math.max(1, Math.ceil(form.content.split(" ").filter(Boolean).length / 200))} min`,
+      tag: form.tag || "Reflections", tagColor: tc.color, tagBg: tc.bg,
       cover: form.cover || "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=60",
     };
-    setPosts([newPost, ...posts]);
+    const newPosts = [p, ...posts];
+    setPosts(newPosts);
     setForm({ title: "", excerpt: "", content: "", tag: "", cover: "" });
-    showToast("✦ Post published successfully");
-    setPage("feed");
-    window.scrollTo(0, 0);
+    const newKitty = getKittyLevel(newPosts.length);
+    if (newKitty.level > kitty.level) {
+      showToast(`✦ Your kitty evolved into "${newKitty.name}"!`);
+      setKittyAnim(true); setTimeout(() => setKittyAnim(false), 800);
+    } else {
+      showToast("✦ Post published successfully");
+    }
+    setPage("profile"); window.scrollTo(0, 0);
   };
 
   return (
     <>
-      <style>{styles}</style>
+      <style>{css}</style>
 
       <nav className="nav">
-        <div className="nav-logo" onClick={() => setPage("feed")}>
-          Ink<span>&</span>Air
-        </div>
+        <div className="nav-logo" onClick={() => setPage("feed")}>Mansha<span>'s</span> Journal</div>
         <div className="nav-links">
           <button className={`nav-btn ${page === "feed" ? "active" : ""}`} onClick={() => setPage("feed")}>Read</button>
           <button className={`nav-btn ${page === "profile" ? "active" : ""}`} onClick={() => setPage("profile")}>Profile</button>
@@ -434,48 +354,39 @@ export default function BlogApp() {
         </div>
       </nav>
 
-      {/* FEED */}
       {page === "feed" && (
         <>
           <div className="feed-hero">
-            <p className="feed-eyebrow">A journal of small observations</p>
-            <h1 className="feed-title">Words that<br/>live <em>quietly</em>.</h1>
-            <p className="feed-subtitle">Essays, fragments, and dispatches from the ordinary extraordinary. Written without hurry.</p>
+            <p className="feed-eyebrow">A journal of small beauties</p>
+            <h1 className="feed-title">Words written<br/>with <em>warmth</em>.</h1>
+            <p className="feed-sub">Essays, reflections, and quiet dispatches. Written without hurry, read without rush.</p>
           </div>
           <div className="feed-main">
             {posts[0] && (
               <div className="featured-card" onClick={() => openPost(posts[0])}>
-                <div className="featured-img">
-                  <img src={posts[0].cover} alt={posts[0].title} />
-                </div>
+                <div className="featured-img"><img src={posts[0].cover} alt={posts[0].title} /></div>
                 <div className="featured-body">
                   <span className="post-tag" style={{ background: posts[0].tagBg, color: posts[0].tagColor }}>{posts[0].tag}</span>
                   <h2>{posts[0].title}</h2>
                   <p>{posts[0].excerpt}</p>
                   <div className="post-meta">
-                    <span>{posts[0].author}</span>
-                    <span className="meta-dot">·</span>
-                    <span>{posts[0].date}</span>
-                    <span className="meta-dot">·</span>
+                    <span>{posts[0].author}</span><span className="meta-dot">·</span>
+                    <span>{posts[0].date}</span><span className="meta-dot">·</span>
                     <span>{posts[0].readTime} read</span>
                   </div>
                 </div>
               </div>
             )}
             <div className="posts-grid">
-              {posts.slice(1).map(post => (
-                <div key={post.id} className="post-card" onClick={() => openPost(post)}>
-                  <div className="card-img">
-                    <img src={post.cover} alt={post.title} />
-                  </div>
+              {posts.slice(1).map(p => (
+                <div key={p.id} className="post-card" onClick={() => openPost(p)}>
+                  <div className="card-img"><img src={p.cover} alt={p.title} /></div>
                   <div className="card-body">
-                    <span className="post-tag" style={{ background: post.tagBg, color: post.tagColor }}>{post.tag}</span>
-                    <h3>{post.title}</h3>
-                    <p>{post.excerpt.slice(0, 100)}…</p>
+                    <span className="post-tag" style={{ background: p.tagBg, color: p.tagColor }}>{p.tag}</span>
+                    <h3>{p.title}</h3>
+                    <p>{p.excerpt.slice(0, 95)}…</p>
                     <div className="post-meta" style={{ marginTop: "0.8rem" }}>
-                      <span>{post.date}</span>
-                      <span className="meta-dot">·</span>
-                      <span>{post.readTime} read</span>
+                      <span>{p.date}</span><span className="meta-dot">·</span><span>{p.readTime} read</span>
                     </div>
                   </div>
                 </div>
@@ -485,21 +396,16 @@ export default function BlogApp() {
         </>
       )}
 
-      {/* READ */}
       {page === "read" && readPost && (
         <div className="read-page">
-          <button className="read-back" onClick={() => setPage("feed")}>
-            ← Back to journal
-          </button>
+          <button className="read-back" onClick={() => setPage("feed")}>← Back to journal</button>
           <img className="read-cover" src={readPost.cover} alt={readPost.title} />
-          <span className="post-tag" style={{ background: readPost.tagBg, color: readPost.tagColor, marginBottom: "1.2rem", display: "inline-block" }}>{readPost.tag}</span>
+          <span className="post-tag" style={{ background: readPost.tagBg, color: readPost.tagColor, marginBottom: "1rem", display: "inline-block" }}>{readPost.tag}</span>
           <h1 className="read-title">{readPost.title}</h1>
           <div className="read-meta">
             <span style={{ fontWeight: 500 }}>{readPost.author}</span>
-            <span className="meta-dot">·</span>
-            <span>{readPost.date}</span>
-            <span className="meta-dot">·</span>
-            <span>{readPost.readTime} read</span>
+            <span className="meta-dot">·</span><span>{readPost.date}</span>
+            <span className="meta-dot">·</span><span>{readPost.readTime} read</span>
           </div>
           <div className="read-content">
             {readPost.content.split("\n\n").map((para, i) => <p key={i}>{para}</p>)}
@@ -507,110 +413,75 @@ export default function BlogApp() {
         </div>
       )}
 
-      {/* CREATE */}
       {page === "create" && (
         <div className="create-page">
-          <div className="create-header">
-            <h1>New Entry</h1>
-            <p>Write something worth keeping.</p>
-          </div>
-
+          <div className="create-header"><h1>New Entry</h1><p>Write something worth keeping.</p></div>
           <div className="form-group">
-            <input
-              className="form-input title-input"
-              placeholder="A title that earns its place…"
-              value={form.title}
-              onChange={e => setForm({ ...form, title: e.target.value })}
-            />
+            <input className="form-input title-input" placeholder="A title that earns its place…" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
           </div>
-
           <div className="form-group">
             <label className="form-label">Tag</label>
             <div className="tags-grid">
-              {TAGS.map(t => (
-                <button key={t} className={`tag-option ${form.tag === t ? "selected" : ""}`} onClick={() => setForm({ ...form, tag: t })}>{t}</button>
-              ))}
+              {TAGS.map(t => <button key={t} className={`tag-option ${form.tag === t ? "selected" : ""}`} onClick={() => setForm({ ...form, tag: t })}>{t}</button>)}
             </div>
           </div>
-
           <div className="form-group">
-            <label className="form-label">Excerpt <span style={{ color: "#bbb", textTransform: "none", letterSpacing: 0 }}>(optional — used as preview)</span></label>
-            <input
-              className="form-input"
-              placeholder="One sentence that makes someone want to read more…"
-              value={form.excerpt}
-              onChange={e => setForm({ ...form, excerpt: e.target.value })}
-            />
+            <label className="form-label">Excerpt <span style={{ textTransform: "none", letterSpacing: 0, color: "#C4B8AE" }}>(optional)</span></label>
+            <input className="form-input" placeholder="One sentence that makes someone want to read more…" value={form.excerpt} onChange={e => setForm({ ...form, excerpt: e.target.value })} />
           </div>
-
           <div className="form-group">
-            <label className="form-label">Cover Image URL <span style={{ color: "#bbb", textTransform: "none", letterSpacing: 0 }}>(optional)</span></label>
-            <input
-              className="form-input"
-              placeholder="https://…"
-              value={form.cover}
-              onChange={e => setForm({ ...form, cover: e.target.value })}
-            />
+            <label className="form-label">Cover Image URL <span style={{ textTransform: "none", letterSpacing: 0, color: "#C4B8AE" }}>(optional)</span></label>
+            <input className="form-input" placeholder="https://…" value={form.cover} onChange={e => setForm({ ...form, cover: e.target.value })} />
           </div>
-
           <div className="form-group">
             <label className="form-label">Body</label>
-            <textarea
-              className="form-textarea"
-              placeholder="Begin with the sentence you've been afraid to write…"
-              value={form.content}
-              onChange={e => setForm({ ...form, content: e.target.value })}
-            />
-            <div className="char-count">{form.content.length} characters · ~{Math.max(1, Math.ceil(form.content.split(" ").filter(Boolean).length / 200))} min read</div>
+            <textarea className="form-textarea" placeholder="Begin with the sentence you've been afraid to write…" value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} />
+            <div className="char-count">{form.content.length} chars · ~{Math.max(1, Math.ceil(form.content.split(" ").filter(Boolean).length / 200))} min read</div>
           </div>
-
-          <button
-            className="publish-btn"
-            onClick={handlePublish}
-            disabled={!form.title.trim() || !form.content.trim()}
-          >
-            Publish to journal
-          </button>
+          <button className="publish-btn" onClick={handlePublish} disabled={!form.title.trim() || !form.content.trim()}>Publish to journal</button>
         </div>
       )}
 
-      {/* PROFILE */}
       {page === "profile" && (
         <div className="profile-page">
           <div className="profile-header">
             <div className="avatar-wrap">
               <div className="avatar-ring" />
-              <img className="avatar" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=220&auto=format&fit=crop&q=80" alt="Profile" />
+              <img className="avatar" src={PROFILE_PIC} alt={AUTHOR} />
             </div>
             <div>
-              <h1 className="profile-name">Meera Vashisht</h1>
-              <p className="profile-handle">@meera.writes</p>
-              <p className="profile-bio">
-                Writing about cities, grief, and the unremarkable beauty of ordinary hours.
-                Based somewhere between Delhi and wherever the next train takes me.
-              </p>
+              <h1 className="profile-name">{AUTHOR}</h1>
+              <p className="profile-handle">{HANDLE}</p>
+              <p className="profile-bio">Writing about cities, softness, and the unremarkable beauty of ordinary hours. Based somewhere between Delhi and wherever the next train takes me.</p>
               <div className="profile-stats">
-                <div className="stat">
-                  <div className="stat-num">{posts.length}</div>
-                  <div className="stat-label">Posts</div>
-                </div>
-                <div className="stat">
-                  <div className="stat-num">{posts.reduce((a, p) => a + parseInt(p.readTime), 0)}</div>
-                  <div className="stat-label">Min Written</div>
-                </div>
-                <div className="stat">
-                  <div className="stat-num">{[...new Set(posts.map(p => p.tag))].length}</div>
-                  <div className="stat-label">Topics</div>
-                </div>
+                <div className="stat"><div className="stat-num">{posts.length}</div><div className="stat-label">Posts</div></div>
+                <div className="stat"><div className="stat-num">{posts.reduce((a, p) => a + parseInt(p.readTime), 0)}</div><div className="stat-label">Min Written</div></div>
+                <div className="stat"><div className="stat-num">{[...new Set(posts.map(p => p.tag))].length}</div><div className="stat-label">Topics</div></div>
               </div>
             </div>
           </div>
 
-          <div className="profile-tags-section">
+          <div className="kitty-card" style={{ transform: kittyAnim ? "scale(1.05)" : "scale(1)" }}>
+            <div style={{ flexShrink: 0 }}>
+              <svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" dangerouslySetInnerHTML={{ __html: kitty.art }} />
+            </div>
+            <div className="kitty-info">
+              <div className="kitty-level-label">Blog Companion · Level {kitty.level}</div>
+              <div className="kitty-name">{kitty.name}</div>
+              <div className="kitty-bar-track"><div className="kitty-bar" style={{ width: `${kitty.progress}%` }} /></div>
+              <div className="kitty-bar-label">
+                {kitty.next
+                  ? `${posts.length} posts · ${kitty.next.minPosts - posts.length} more to evolve into "${kitty.next.name}"`
+                  : `${posts.length} posts · Maximum level reached ✦`}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginBottom: "2.5rem" }}>
             <p className="section-title">Writes about</p>
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
               {[...new Set(posts.map(p => p.tag))].map(tag => {
-                const tc = TAG_COLORS[tag] || { color: "#666", bg: "#f5f5f0" };
+                const tc = TAG_COLORS[tag] || { color: "#7a6060", bg: "#F5E8E8" };
                 return <span key={tag} className="post-tag" style={{ background: tc.bg, color: tc.color }}>{tag}</span>;
               })}
             </div>
@@ -618,18 +489,14 @@ export default function BlogApp() {
 
           <p className="section-title">All posts</p>
           <div className="profile-posts-grid">
-            {posts.map(post => (
-              <div key={post.id} className="post-card" onClick={() => openPost(post)}>
-                <div className="card-img">
-                  <img src={post.cover} alt={post.title} />
-                </div>
+            {posts.map(p => (
+              <div key={p.id} className="post-card" onClick={() => openPost(p)}>
+                <div className="card-img"><img src={p.cover} alt={p.title} /></div>
                 <div className="card-body">
-                  <span className="post-tag" style={{ background: post.tagBg, color: post.tagColor }}>{post.tag}</span>
-                  <h3>{post.title}</h3>
+                  <span className="post-tag" style={{ background: p.tagBg, color: p.tagColor }}>{p.tag}</span>
+                  <h3>{p.title}</h3>
                   <div className="post-meta" style={{ marginTop: "0.8rem" }}>
-                    <span>{post.date}</span>
-                    <span className="meta-dot">·</span>
-                    <span>{post.readTime} read</span>
+                    <span>{p.date}</span><span className="meta-dot">·</span><span>{p.readTime} read</span>
                   </div>
                 </div>
               </div>
