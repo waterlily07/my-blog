@@ -1,40 +1,15 @@
 import { useState, useEffect } from "react";
+import { createClient } from "@supabase/supabase-js";
 
-// Palette: Warm Fog #DDD3C9 · Berry Good #ECC4C3 · Usu Koubai #B97D7B · Meadow Mauve #928E5E · Soldier Green #575527
+// ── Supabase ──────────────────────────────────────────────────
+const SUPABASE_URL = "https://mmqcgafgdapgfbeqjiad.supabase.co";
+const SUPABASE_KEY = "sb_publishable_DFSf5s3WMiK97Fnm7HQ5Tw_uLWMAyyR";
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ── Config ────────────────────────────────────────────────────
 const AUTHOR = "Mansha Mehra";
 const HANDLE = "@mansha.writes";
 const PROFILE_PIC = "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&auto=format&fit=crop&q=80";
-
-const INITIAL_POSTS = [
-  {
-    id: 1,
-    title: "The Quiet Hours Before Dawn",
-    excerpt: "There is a particular kind of silence that exists only between 3 and 5 in the morning — a silence that feels borrowed, provisional, almost sacred.",
-    content: "There is a particular kind of silence that exists only between 3 and 5 in the morning — a silence that feels borrowed, provisional, almost sacred. Cities don't sleep so much as they pause, holding their breath between the last drunk's stumble home and the first baker's alarm.\n\nI've spent more of these hours awake than most people would consider wise. Not from insomnia exactly, but from a persistent feeling that something important happens in that dark window — some reshuffling of the world's priorities, some quiet negotiation between what the day demands and what the soul actually needs.\n\nThe best writing I've ever done happened in those hours. Not because I'm more disciplined then, but because I'm more honest. The performances we maintain for ourselves — the curated self-image, the optimistic narrator — go quiet when we're tired enough.",
-    author: AUTHOR, date: "Apr 28, 2026", readTime: "4 min",
-    tag: "Reflections", tagColor: "#575527", tagBg: "#E4E2C8",
-    cover: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&auto=format&fit=crop&q=60",
-  },
-  {
-    id: 2,
-    title: "On Loving a City That Doesn't Know Your Name",
-    excerpt: "Delhi loves you back in the most impersonal way — through its noise, its dust, its inexhaustible supply of samosa and chai at any hour.",
-    content: "Delhi loves you back in the most impersonal way — through its noise, its dust, its inexhaustible supply of samosa and chai at any hour. There is no intimacy in how a city holds you. It holds everyone this way.\n\nAnd yet. And yet you find yourself walking the same lane in Lodi Garden three mornings in a row, watching the same woman feed the same crow, and something in you calls it home.\n\nHome might just be the places where your habits have found purchase. Where the chai-wallah knows your order. Where you've cried in public enough times that the park bench feels like a witness rather than furniture.",
-    author: AUTHOR, date: "Apr 19, 2026", readTime: "6 min",
-    tag: "City Life", tagColor: "#7A5250", tagBg: "#F5E4E4",
-    cover: "https://images.unsplash.com/photo-1587474260584-136574528ed5?w=800&auto=format&fit=crop&q=60",
-  },
-  {
-    id: 3,
-    title: "Everything I Know About Grief I Learned from Monsoon",
-    excerpt: "It comes without asking. It saturates everything. And then, without ceremony, it simply stops — leaving behind a smell that is almost unbearably clean.",
-    content: "It comes without asking. It saturates everything. And then, without ceremony, it simply stops — leaving behind a smell that is almost unbearably clean.\n\nGrief is weather. That's the thing they don't put on the sympathy cards. They'd rather you think of it as a journey, a process, something with stages and completion. But grief doesn't have a destination. It has seasons.\n\nThe monsoon version of grief is the most honest: loud, total, and then quietly gone, until the same clouds return next year and you realize you've been waiting for them.",
-    author: AUTHOR, date: "Apr 7, 2026", readTime: "5 min",
-    tag: "Personal", tagColor: "#6B6640", tagBg: "#EDEBDA",
-    cover: "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17?w=800&auto=format&fit=crop&q=60",
-  },
-];
 
 const TAGS = ["Reflections", "City Life", "Personal", "Literature", "Travel", "Philosophy", "Memory"];
 const TAG_COLORS = {
@@ -47,6 +22,7 @@ const TAG_COLORS = {
   "Memory":      { color: "#6B6640", bg: "#F0EFE0" },
 };
 
+// ── Kitty levels ──────────────────────────────────────────────
 const KITTY_LEVELS = [
   {
     level: 1, name: "Newborn Kitten", minPosts: 0,
@@ -83,7 +59,6 @@ const KITTY_LEVELS = [
 <ellipse cx="44" cy="47" rx="0.6" ry="0.8" fill="white"/>
 <ellipse cx="58" cy="47" rx="0.6" ry="0.8" fill="white"/>
 <path d="M45,55 Q50,59 55,55" stroke="#B97D7B" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-<ellipse cx="50" cy="54.5" rx="2.5" ry="1.5" fill="#ECC4C3"/>
 <line x1="34" y1="50" x2="23" y2="47" stroke="#928E5E" stroke-width="1.2"/>
 <line x1="34" y1="53" x2="23" y2="53" stroke="#928E5E" stroke-width="1.2"/>
 <line x1="34" y1="56" x2="23" y2="59" stroke="#928E5E" stroke-width="1.2"/>
@@ -107,7 +82,6 @@ const KITTY_LEVELS = [
 <ellipse cx="43" cy="45" rx="0.7" ry="0.9" fill="white"/>
 <ellipse cx="59" cy="45" rx="0.7" ry="0.9" fill="white"/>
 <path d="M44,54 Q50,59 56,54" stroke="#B97D7B" stroke-width="2" fill="none" stroke-linecap="round"/>
-<ellipse cx="50" cy="54" rx="3" ry="2" fill="#ECC4C3"/>
 <line x1="32" y1="47" x2="19" y2="43" stroke="#928E5E" stroke-width="1.3"/>
 <line x1="32" y1="51" x2="19" y2="51" stroke="#928E5E" stroke-width="1.3"/>
 <line x1="32" y1="55" x2="19" y2="59" stroke="#928E5E" stroke-width="1.3"/>
@@ -131,7 +105,6 @@ const KITTY_LEVELS = [
 <ellipse cx="42" cy="43" rx="0.8" ry="1" fill="white"/>
 <ellipse cx="60" cy="43" rx="0.8" ry="1" fill="white"/>
 <path d="M43,54 Q50,60 57,54" stroke="#B97D7B" stroke-width="2" fill="none" stroke-linecap="round"/>
-<ellipse cx="50" cy="54" rx="3.5" ry="2.2" fill="#ECC4C3"/>
 <line x1="30" y1="46" x2="15" y2="41" stroke="#928E5E" stroke-width="1.4"/>
 <line x1="30" y1="50" x2="15" y2="50" stroke="#928E5E" stroke-width="1.4"/>
 <line x1="30" y1="54" x2="15" y2="59" stroke="#928E5E" stroke-width="1.4"/>
@@ -156,7 +129,6 @@ const KITTY_LEVELS = [
 <ellipse cx="41" cy="42" rx="1" ry="1.2" fill="white"/>
 <ellipse cx="61" cy="42" rx="1" ry="1.2" fill="white"/>
 <path d="M42,53 Q50,60 58,53" stroke="#B97D7B" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-<ellipse cx="50" cy="53" rx="4" ry="2.5" fill="#ECC4C3"/>
 <line x1="28" y1="43" x2="11" y2="37" stroke="#928E5E" stroke-width="1.5"/>
 <line x1="28" y1="47" x2="11" y2="47" stroke="#928E5E" stroke-width="1.5"/>
 <line x1="28" y1="51" x2="11" y2="57" stroke="#928E5E" stroke-width="1.5"/>
@@ -179,6 +151,7 @@ function getKittyLevel(count) {
   return { ...cur, progress, next };
 }
 
+// ── Styles ────────────────────────────────────────────────────
 const css = `
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -188,12 +161,7 @@ const css = `
 }
 body, #root { font-family: 'Lora', Georgia, serif; background: var(--parchment); color: var(--ink); min-height: 100vh; }
 
-.nav {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(247,243,239,0.93); backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--fog); height: 62px; padding: 0 2rem;
-  display: flex; align-items: center; justify-content: space-between;
-}
+.nav { position: sticky; top: 0; z-index: 100; background: rgba(247,243,239,0.93); backdrop-filter: blur(14px); border-bottom: 1px solid var(--fog); height: 62px; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; }
 .nav-logo { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--green); cursor: pointer; }
 .nav-logo span { color: var(--koubai); font-style: italic; }
 .nav-links { display: flex; gap: 4px; align-items: center; }
@@ -216,10 +184,10 @@ body, #root { font-family: 'Lora', Georgia, serif; background: var(--parchment);
 .featured-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
 .featured-card:hover .featured-img img { transform: scale(1.04); }
 .featured-body { padding: 2.5rem; display: flex; flex-direction: column; justify-content: center; }
-.featured-body h2 { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 700; line-height: 1.25; color: var(--ink); margin: 0.8rem 0 1rem; letter-spacing: -0.3px; }
+.featured-body h2 { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 700; line-height: 1.25; color: var(--ink); margin: 0.8rem 0 1rem; }
 .featured-body p { font-size: 0.92rem; line-height: 1.8; color: var(--mauve); margin-bottom: 1.5rem; font-style: italic; }
 
-.post-tag { display: inline-block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; font-weight: 600; font-family: 'Lora', serif; }
+.post-tag { display: inline-block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
 .post-meta { font-size: 12px; color: #A89A8A; display: flex; gap: 6px; align-items: center; }
 .meta-dot { color: var(--berry); }
 
@@ -237,7 +205,7 @@ body, #root { font-family: 'Lora', Georgia, serif; background: var(--parchment);
 .read-back { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--mauve); cursor: pointer; border: none; background: none; font-family: 'Lora', serif; margin-bottom: 2rem; transition: color 0.2s; }
 .read-back:hover { color: var(--koubai); }
 .read-cover { width: 100%; height: 300px; object-fit: cover; border-radius: 12px; margin-bottom: 2rem; }
-.read-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.2; color: var(--green); margin-bottom: 1.2rem; letter-spacing: -0.5px; }
+.read-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.2; color: var(--green); margin-bottom: 1.2rem; }
 .read-meta { display: flex; gap: 10px; align-items: center; padding-bottom: 1.5rem; border-bottom: 1px solid var(--fog); margin-bottom: 2rem; flex-wrap: wrap; }
 .read-content { font-size: 1.05rem; line-height: 2; color: #3D3726; }
 .read-content p { margin-bottom: 1.5rem; }
@@ -269,7 +237,7 @@ body, #root { font-family: 'Lora', Georgia, serif; background: var(--parchment);
 .avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid white; box-shadow: 0 0 0 2px var(--berry); }
 .avatar-ring { position: absolute; inset: -7px; border-radius: 50%; border: 2px dashed var(--koubai); animation: spin 22s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.profile-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--green); margin-bottom: 0.2rem; letter-spacing: -0.5px; }
+.profile-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--green); margin-bottom: 0.2rem; }
 .profile-handle { font-size: 14px; color: var(--koubai); margin-bottom: 1rem; }
 .profile-bio { font-size: 0.93rem; line-height: 1.8; color: var(--mauve); max-width: 440px; font-style: italic; margin-bottom: 1.5rem; }
 .profile-stats { display: flex; gap: 2rem; }
@@ -286,6 +254,10 @@ body, #root { font-family: 'Lora', Georgia, serif; background: var(--parchment);
 .section-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--green); margin-bottom: 1rem; }
 .profile-posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 18px; }
 
+.loading { display: flex; justify-content: center; align-items: center; padding: 6rem 2rem; font-style: italic; color: var(--mauve); font-size: 1rem; }
+.empty-state { text-align: center; padding: 5rem 2rem; color: var(--mauve); font-style: italic; }
+.empty-state h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--green); margin-bottom: 0.5rem; }
+
 .success-toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); background: var(--green); color: var(--fog); padding: 11px 24px; border-radius: 30px; font-size: 13px; font-family: 'Lora', serif; box-shadow: 0 6px 24px rgba(87,85,39,0.2); animation: slideUp 0.3s ease, fadeOut 0.3s ease 2.5s forwards; z-index: 999; }
 @keyframes slideUp { from { transform: translate(-50%, 16px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
 @keyframes fadeOut { to { opacity: 0; } }
@@ -297,63 +269,102 @@ body, #root { font-family: 'Lora', Georgia, serif; background: var(--parchment);
 }
 `;
 
+// ── App ───────────────────────────────────────────────────────
 export default function App() {
   const [page, setPage] = useState("feed");
-  const [posts, setPosts] = useState(() => {
-    try { const s = localStorage.getItem("mansha_posts"); return s ? JSON.parse(s) : INITIAL_POSTS; } catch { return INITIAL_POSTS; }
-  });
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [readPost, setReadPost] = useState(null);
   const [toast, setToast] = useState(null);
   const [kittyAnim, setKittyAnim] = useState(false);
+  const [publishing, setPublishing] = useState(false);
   const [form, setForm] = useState({ title: "", excerpt: "", content: "", tag: "", cover: "" });
 
+  // Load posts from Supabase on mount
   useEffect(() => {
-    try { localStorage.setItem("mansha_posts", JSON.stringify(posts)); } catch {}
-  }, [posts]);
+    fetchPosts();
+  }, []);
+
+  async function fetchPosts() {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("posts")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (!error && data) setPosts(data);
+    setLoading(false);
+  }
 
   const kitty = getKittyLevel(posts.length);
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 3000); };
   const openPost = (p) => { setReadPost(p); setPage("read"); window.scrollTo(0, 0); };
 
-  const handlePublish = () => {
+  async function handlePublish() {
     if (!form.title.trim() || !form.content.trim()) return;
+    setPublishing(true);
     const tc = TAG_COLORS[form.tag] || TAG_COLORS["Reflections"];
-    const p = {
-      id: Date.now(), title: form.title,
+    const newPost = {
+      title: form.title,
       excerpt: form.excerpt || form.content.slice(0, 140) + "…",
-      content: form.content, author: AUTHOR,
-      date: new Date().toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }),
-      readTime: `${Math.max(1, Math.ceil(form.content.split(" ").filter(Boolean).length / 200))} min`,
-      tag: form.tag || "Reflections", tagColor: tc.color, tagBg: tc.bg,
+      content: form.content,
+      tag: form.tag || "Reflections",
+      tag_color: tc.color,
+      tag_bg: tc.bg,
       cover: form.cover || "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=60",
+      read_time: `${Math.max(1, Math.ceil(form.content.split(" ").filter(Boolean).length / 200))} min`,
     };
-    const newPosts = [p, ...posts];
-    setPosts(newPosts);
+
+    const { error } = await supabase.from("posts").insert([newPost]);
+
+    if (error) {
+      showToast("Something went wrong. Please try again.");
+      setPublishing(false);
+      return;
+    }
+
+    await fetchPosts();
     setForm({ title: "", excerpt: "", content: "", tag: "", cover: "" });
-    const newKitty = getKittyLevel(newPosts.length);
+    setPublishing(false);
+
+    const newKitty = getKittyLevel(posts.length + 1);
     if (newKitty.level > kitty.level) {
       showToast(`✦ Your kitty evolved into "${newKitty.name}"!`);
       setKittyAnim(true); setTimeout(() => setKittyAnim(false), 800);
     } else {
-      showToast("✦ Post published successfully");
+      showToast("✦ Post published! Everyone can see it now 🌸");
     }
-    setPage("profile"); window.scrollTo(0, 0);
-  };
+    setPage("feed"); window.scrollTo(0, 0);
+  }
+
+  // Normalize post fields (Supabase uses snake_case)
+  function norm(p) {
+    return {
+      ...p,
+      tagColor: p.tag_color || p.tagColor || "#575527",
+      tagBg: p.tag_bg || p.tagBg || "#E4E2C8",
+      readTime: p.read_time || p.readTime || "1 min",
+      date: p.created_at ? new Date(p.created_at).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" }) : "",
+      author: AUTHOR,
+    };
+  }
+
+  const normalizedPosts = posts.map(norm);
 
   return (
     <>
       <style>{css}</style>
 
       <nav className="nav">
-        <div className="nav-logo" onClick={() => setPage("feed")}>Mansha<span>'s</span> Journal</div>
+        <div className="nav-logo" onClick={() => { setPage("feed"); fetchPosts(); }}>Mansha<span>'s</span> Journal</div>
         <div className="nav-links">
-          <button className={`nav-btn ${page === "feed" ? "active" : ""}`} onClick={() => setPage("feed")}>Read</button>
+          <button className={`nav-btn ${page === "feed" ? "active" : ""}`} onClick={() => { setPage("feed"); fetchPosts(); }}>Read</button>
           <button className={`nav-btn ${page === "profile" ? "active" : ""}`} onClick={() => setPage("profile")}>Profile</button>
           <button className="nav-btn write" onClick={() => setPage("create")}>+ Write</button>
         </div>
       </nav>
 
+      {/* ── FEED ── */}
       {page === "feed" && (
         <>
           <div className="feed-hero">
@@ -362,57 +373,68 @@ export default function App() {
             <p className="feed-sub">Essays, reflections, and quiet dispatches. Written without hurry, read without rush.</p>
           </div>
           <div className="feed-main">
-            {posts[0] && (
-              <div className="featured-card" onClick={() => openPost(posts[0])}>
-                <div className="featured-img"><img src={posts[0].cover} alt={posts[0].title} /></div>
-                <div className="featured-body">
-                  <span className="post-tag" style={{ background: posts[0].tagBg, color: posts[0].tagColor }}>{posts[0].tag}</span>
-                  <h2>{posts[0].title}</h2>
-                  <p>{posts[0].excerpt}</p>
-                  <div className="post-meta">
-                    <span>{posts[0].author}</span><span className="meta-dot">·</span>
-                    <span>{posts[0].date}</span><span className="meta-dot">·</span>
-                    <span>{posts[0].readTime} read</span>
-                  </div>
-                </div>
+            {loading ? (
+              <div className="loading">Loading posts…</div>
+            ) : normalizedPosts.length === 0 ? (
+              <div className="empty-state">
+                <h3>No posts yet</h3>
+                <p>Click "+ Write" to publish your first entry.</p>
               </div>
-            )}
-            <div className="posts-grid">
-              {posts.slice(1).map(p => (
-                <div key={p.id} className="post-card" onClick={() => openPost(p)}>
-                  <div className="card-img"><img src={p.cover} alt={p.title} /></div>
-                  <div className="card-body">
-                    <span className="post-tag" style={{ background: p.tagBg, color: p.tagColor }}>{p.tag}</span>
-                    <h3>{p.title}</h3>
-                    <p>{p.excerpt.slice(0, 95)}…</p>
-                    <div className="post-meta" style={{ marginTop: "0.8rem" }}>
-                      <span>{p.date}</span><span className="meta-dot">·</span><span>{p.readTime} read</span>
+            ) : (
+              <>
+                <div className="featured-card" onClick={() => openPost(normalizedPosts[0])}>
+                  <div className="featured-img"><img src={normalizedPosts[0].cover} alt={normalizedPosts[0].title} /></div>
+                  <div className="featured-body">
+                    <span className="post-tag" style={{ background: normalizedPosts[0].tagBg, color: normalizedPosts[0].tagColor }}>{normalizedPosts[0].tag}</span>
+                    <h2>{normalizedPosts[0].title}</h2>
+                    <p>{normalizedPosts[0].excerpt}</p>
+                    <div className="post-meta">
+                      <span>{normalizedPosts[0].author}</span><span className="meta-dot">·</span>
+                      <span>{normalizedPosts[0].date}</span><span className="meta-dot">·</span>
+                      <span>{normalizedPosts[0].readTime} read</span>
                     </div>
                   </div>
                 </div>
-              ))}
-            </div>
+                <div className="posts-grid">
+                  {normalizedPosts.slice(1).map(p => (
+                    <div key={p.id} className="post-card" onClick={() => openPost(p)}>
+                      <div className="card-img"><img src={p.cover} alt={p.title} /></div>
+                      <div className="card-body">
+                        <span className="post-tag" style={{ background: p.tagBg, color: p.tagColor }}>{p.tag}</span>
+                        <h3>{p.title}</h3>
+                        <p>{p.excerpt?.slice(0, 95)}…</p>
+                        <div className="post-meta" style={{ marginTop: "0.8rem" }}>
+                          <span>{p.date}</span><span className="meta-dot">·</span><span>{p.readTime} read</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
         </>
       )}
 
-      {page === "read" && readPost && (
+      {/* ── READ ── */}
+      {page === "read" && readPost && (() => { const p = norm(readPost); return (
         <div className="read-page">
           <button className="read-back" onClick={() => setPage("feed")}>← Back to journal</button>
-          <img className="read-cover" src={readPost.cover} alt={readPost.title} />
-          <span className="post-tag" style={{ background: readPost.tagBg, color: readPost.tagColor, marginBottom: "1rem", display: "inline-block" }}>{readPost.tag}</span>
-          <h1 className="read-title">{readPost.title}</h1>
+          <img className="read-cover" src={p.cover} alt={p.title} />
+          <span className="post-tag" style={{ background: p.tagBg, color: p.tagColor, marginBottom: "1rem", display: "inline-block" }}>{p.tag}</span>
+          <h1 className="read-title">{p.title}</h1>
           <div className="read-meta">
-            <span style={{ fontWeight: 500 }}>{readPost.author}</span>
-            <span className="meta-dot">·</span><span>{readPost.date}</span>
-            <span className="meta-dot">·</span><span>{readPost.readTime} read</span>
+            <span style={{ fontWeight: 500 }}>{p.author}</span>
+            <span className="meta-dot">·</span><span>{p.date}</span>
+            <span className="meta-dot">·</span><span>{p.readTime} read</span>
           </div>
           <div className="read-content">
-            {readPost.content.split("\n\n").map((para, i) => <p key={i}>{para}</p>)}
+            {p.content.split("\n\n").map((para, i) => <p key={i}>{para}</p>)}
           </div>
         </div>
-      )}
+      ); })()}
 
+      {/* ── CREATE ── */}
       {page === "create" && (
         <div className="create-page">
           <div className="create-header"><h1>New Entry</h1><p>Write something worth keeping.</p></div>
@@ -438,10 +460,13 @@ export default function App() {
             <textarea className="form-textarea" placeholder="Begin with the sentence you've been afraid to write…" value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} />
             <div className="char-count">{form.content.length} chars · ~{Math.max(1, Math.ceil(form.content.split(" ").filter(Boolean).length / 200))} min read</div>
           </div>
-          <button className="publish-btn" onClick={handlePublish} disabled={!form.title.trim() || !form.content.trim()}>Publish to journal</button>
+          <button className="publish-btn" onClick={handlePublish} disabled={!form.title.trim() || !form.content.trim() || publishing}>
+            {publishing ? "Publishing…" : "Publish to journal"}
+          </button>
         </div>
       )}
 
+      {/* ── PROFILE ── */}
       {page === "profile" && (
         <div className="profile-page">
           <div className="profile-header">
@@ -455,7 +480,7 @@ export default function App() {
               <p className="profile-bio">Writing about cities, softness, and the unremarkable beauty of ordinary hours. Based somewhere between Delhi and wherever the next train takes me.</p>
               <div className="profile-stats">
                 <div className="stat"><div className="stat-num">{posts.length}</div><div className="stat-label">Posts</div></div>
-                <div className="stat"><div className="stat-num">{posts.reduce((a, p) => a + parseInt(p.readTime), 0)}</div><div className="stat-label">Min Written</div></div>
+                <div className="stat"><div className="stat-num">{normalizedPosts.reduce((a, p) => a + parseInt(p.readTime), 0)}</div><div className="stat-label">Min Written</div></div>
                 <div className="stat"><div className="stat-num">{[...new Set(posts.map(p => p.tag))].length}</div><div className="stat-label">Topics</div></div>
               </div>
             </div>
@@ -488,20 +513,22 @@ export default function App() {
           </div>
 
           <p className="section-title">All posts</p>
-          <div className="profile-posts-grid">
-            {posts.map(p => (
-              <div key={p.id} className="post-card" onClick={() => openPost(p)}>
-                <div className="card-img"><img src={p.cover} alt={p.title} /></div>
-                <div className="card-body">
-                  <span className="post-tag" style={{ background: p.tagBg, color: p.tagColor }}>{p.tag}</span>
-                  <h3>{p.title}</h3>
-                  <div className="post-meta" style={{ marginTop: "0.8rem" }}>
-                    <span>{p.date}</span><span className="meta-dot">·</span><span>{p.readTime} read</span>
+          {loading ? <div className="loading">Loading…</div> : (
+            <div className="profile-posts-grid">
+              {normalizedPosts.map(p => (
+                <div key={p.id} className="post-card" onClick={() => openPost(p)}>
+                  <div className="card-img"><img src={p.cover} alt={p.title} /></div>
+                  <div className="card-body">
+                    <span className="post-tag" style={{ background: p.tagBg, color: p.tagColor }}>{p.tag}</span>
+                    <h3>{p.title}</h3>
+                    <div className="post-meta" style={{ marginTop: "0.8rem" }}>
+                      <span>{p.date}</span><span className="meta-dot">·</span><span>{p.readTime} read</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
