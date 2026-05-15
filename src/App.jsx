@@ -9,7 +9,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 // ── Config ────────────────────────────────────────────────────
 const AUTHOR = "Mansha Mehra";
 const HANDLE = "@mansha.writes";
-const PROFILE_PIC = "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=400&auto=format&fit=crop&q=80";
+const PROFILE_PIC = "https://photos.fife.usercontent.google.com/pw/AP1GczPMGDo2aHH4s4WuUngDk3jlhfT1r2PEepl0XO7imI73FXNiDuYCdFIo=w363-h645-s-no-gm?authuser=0";
 
 const TAGS = ["Reflections", "City Life", "Personal", "Literature", "Travel", "Philosophy", "Memory"];
 const TAG_COLORS = {
