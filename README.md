@@ -40,4 +40,11 @@ React, JavaScript, CSS, Python, and Create React App. The project stays dependen
 
 ## Next steps
 
-I plan to replace the example projects with links to finished coursework, add tests for the Python utilities, and connect the contact details to my real professional profiles as they are ready.
+The portfolio currently showcases the direction of each project, while the CGPA and expense utilities are already runnable. Future development will make every featured project independently runnable from the repository:
+
+- Give each project its own folder with source code and a focused README.
+- Add a clear run command for every project, such as `npm start` or `python main.py`.
+- Link each portfolio card to its project folder, live demo, or GitHub repository.
+- Replace the example project descriptions with finished coursework and real demos.
+- Add tests for the Python utilities and document expected sample output.
+- Connect the contact details to real professional profiles as they are ready.
